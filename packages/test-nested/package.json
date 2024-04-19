@@ -1,0 +1,8 @@
+{
+  "name": "@bycedric/test-install-nested",
+  "version": "1.0.0",
+  "main": "index.js",
+  "peerDependencies": {
+    "@bycedric/test-install-root": ">=1.0.0"
+  }
+}
