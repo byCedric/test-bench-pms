@@ -1,0 +1,173 @@
+name: test
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  npm:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [7.x, 8.x, 9.x, 10.x]
+    steps:
+      - name: 🏗 Setup repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: 🏗 Setup npm
+        run: npm instal -g npm@${{ matrix.version }} && npm --version
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: ℹ️ Check installed packages
+        run: npm list
+
+      - name: 🧪 Validate versions
+        run: |
+          VERSION_ROOT=$(node --print "require('@urql/core/package.json').version")
+          VERSION_NESTED=$(node --print "require(require.resolve('@urql/core/package.json', { paths: [require.resolve('@urql/exchange-retry')] })).version")
+          echo "Root version: $VERSION_ROOT"
+          echo "Nested version: $VERSION_NESTED"
+          if [[ "$VERSION_ROOT" == "$VERSION_NESTED" ]]; then
+            echo "Versions are equal"
+          else
+            echo "Versions are not equal."
+            exit 1
+          fi
+
+  pnpm:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [7.x, 8.x, 9.x]
+    steps:
+      - name: 🏗 Setup repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: 🏗 Setup pnpm
+        run: npm instal -g pnpm@${{ matrix.version }} && pnpm --version
+
+      - name: 📦 Install dependencies
+        run: pnpm install
+
+      - name: ℹ️ Check installed packages
+        run: pnpm list --long
+
+      - name: 🧪 Validate versions
+        run: |
+          VERSION_ROOT=$(node --print "require('@urql/core/package.json').version")
+          VERSION_NESTED=$(node --print "require(require.resolve('@urql/core/package.json', { paths: [require.resolve('@urql/exchange-retry')] })).version")
+          echo "Root version: $VERSION_ROOT"
+          echo "Nested version: $VERSION_NESTED"
+          if [[ "$VERSION_ROOT" == "$VERSION_NESTED" ]]; then
+            echo "Versions are equal"
+          else
+            echo "Versions are not equal."
+            exit 1
+          fi
+
+  yarn:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [1.22.22, 3.8.1, 4.1.1]
+    steps:
+      - name: 🏗 Setup repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: 🏗 Setup yarn
+        run: yarn set version ${{ matrix.version }} && yarn --version
+
+      - name: 📦 Install dependencies
+        if: ${{ matrix.version == '1.22.22' }}
+        run: yarn install
+
+      - name: ℹ️ Check installed packages
+        if: ${{ matrix.version == '1.22.22' }}
+        run: yarn list
+
+      - name: Configure yarn
+        if: ${{ matrix.version != '1.22.22' }}
+        run: yarn config set nodeLinker node-modules
+
+      - name: 📦 Install dependencies
+        if: ${{ matrix.version != '1.22.22' }}
+        run: yarn install --no-immutable
+
+      - name: ℹ️ Check installed packages
+        if: ${{ matrix.version != '1.22.22' }}
+        run: yarn info --all --recursive
+
+      - name: 🧪 Validate versions
+        run: |
+          VERSION_ROOT=$(node --print "require('@urql/core/package.json').version")
+          VERSION_NESTED=$(node --print "require(require.resolve('@urql/core/package.json', { paths: [require.resolve('@urql/exchange-retry')] })).version")
+          echo "Root version: $VERSION_ROOT"
+          echo "Nested version: $VERSION_NESTED"
+          if [[ "$VERSION_ROOT" == "$VERSION_NESTED" ]]; then
+            echo "Versions are equal"
+          else
+            echo "Versions are not equal."
+            exit 1
+          fi
+
+  bun:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [1.x, 1.1, 1.0.22]
+    steps:
+      - name: 🏗 Setup repository
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: 🏗 Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: ${{ matrix.version }}
+
+      - name: 📦 Install dependencies
+        run: bun install --yarn
+
+      - name: ℹ️ Check installed packages
+        run: yarn list
+
+      - name: 🧪 Validate versions
+        run: |
+          VERSION_ROOT=$(node --print "require('@urql/core/package.json').version")
+          VERSION_NESTED=$(node --print "require(require.resolve('@urql/core/package.json', { paths: [require.resolve('@urql/exchange-retry')] })).version")
+          echo "Root version: $VERSION_ROOT"
+          echo "Nested version: $VERSION_NESTED"
+          if [[ "$VERSION_ROOT" == "$VERSION_NESTED" ]]; then
+            echo "Versions are equal"
+          else
+            echo "Versions are not equal."
+            exit 1
+          fi
