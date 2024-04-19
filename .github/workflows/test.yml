@@ -34,8 +34,8 @@ jobs:
 
       - name: 🧪 Validate versions
         run: |
-          VERSION_ROOT=$(node --print "require('@urql/core/package.json').version")
-          VERSION_NESTED=$(node --print "require(require.resolve('@urql/core/package.json', { paths: [require.resolve('@urql/exchange-retry')] })).version")
+          VERSION_ROOT=$(node --print "require('@bycedric/test-install-root/package.json').version")
+          VERSION_NESTED=$(node --print "require(require.resolve('@bycedric/test-install-root/package.json', { paths: [require.resolve('@bycedric/test-install-nested')] })).version")
           echo "Root version: $VERSION_ROOT"
           echo "Nested version: $VERSION_NESTED"
           if [[ "$VERSION_ROOT" == "$VERSION_NESTED" ]]; then
@@ -71,8 +71,8 @@ jobs:
 
       - name: 🧪 Validate versions
         run: |
-          VERSION_ROOT=$(node --print "require('@urql/core/package.json').version")
-          VERSION_NESTED=$(node --print "require(require.resolve('@urql/core/package.json', { paths: [require.resolve('@urql/exchange-retry')] })).version")
+          VERSION_ROOT=$(node --print "require('@bycedric/test-install-root/package.json').version")
+          VERSION_NESTED=$(node --print "require(require.resolve('@bycedric/test-install-root/package.json', { paths: [require.resolve('@bycedric/test-install-nested')] })).version")
           echo "Root version: $VERSION_ROOT"
           echo "Nested version: $VERSION_NESTED"
           if [[ "$VERSION_ROOT" == "$VERSION_NESTED" ]]; then
@@ -122,8 +122,8 @@ jobs:
 
       - name: 🧪 Validate versions
         run: |
-          VERSION_ROOT=$(node --print "require('@urql/core/package.json').version")
-          VERSION_NESTED=$(node --print "require(require.resolve('@urql/core/package.json', { paths: [require.resolve('@urql/exchange-retry')] })).version")
+          VERSION_ROOT=$(node --print "require('@bycedric/test-install-root/package.json').version")
+          VERSION_NESTED=$(node --print "require(require.resolve('@bycedric/test-install-root/package.json', { paths: [require.resolve('@bycedric/test-install-nested')] })).version")
           echo "Root version: $VERSION_ROOT"
           echo "Nested version: $VERSION_NESTED"
           if [[ "$VERSION_ROOT" == "$VERSION_NESTED" ]]; then
@@ -161,8 +161,8 @@ jobs:
 
       - name: 🧪 Validate versions
         run: |
-          VERSION_ROOT=$(node --print "require('@urql/core/package.json').version")
-          VERSION_NESTED=$(node --print "require(require.resolve('@urql/core/package.json', { paths: [require.resolve('@urql/exchange-retry')] })).version")
+          VERSION_ROOT=$(node --print "require('@bycedric/test-install-root/package.json').version")
+          VERSION_NESTED=$(node --print "require(require.resolve('@bycedric/test-install-root/package.json', { paths: [require.resolve('@bycedric/test-install-nested')] })).version")
           echo "Root version: $VERSION_ROOT"
           echo "Nested version: $VERSION_NESTED"
           if [[ "$VERSION_ROOT" == "$VERSION_NESTED" ]]; then

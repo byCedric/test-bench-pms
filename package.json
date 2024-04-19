@@ -2,7 +2,7 @@
   "private": true,
   "name": "test-project",
   "dependencies": {
-    "@urql/core": "2.3.6",
-    "@urql/exchange-retry": "0.3.0"
+    "@bycedric/test-install-root": "1.0.0",
+    "@bycedric/test-install-nested": "1.0.0"
   }
 }
